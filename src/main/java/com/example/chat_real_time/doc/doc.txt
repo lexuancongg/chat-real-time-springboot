@@ -1,0 +1,9 @@
+Spring Framework WebSocket + STOMP
+https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#websocket
+
+Spring Boot Guide – Messaging STOMP + WebSocket
+https://spring.io/guides/gs/messaging-stomp-websocket/
+
+
+
+https://github.com/rstoyanchev/spring-websocket-portfolio/blob/main/src/main/java/org/springframework/samples/portfolio/config/DispatcherServletInitializer.java
