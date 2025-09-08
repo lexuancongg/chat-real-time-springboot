@@ -1,10 +1,14 @@
 package com.example.chat_real_time.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.server.HandshakeInterceptor;
+import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
+
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
@@ -12,7 +16,8 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // /portfolio is the HTTP URL for the endpoint to which a WebSocket (or SockJS)
         // client needs to connect for the WebSocket handshake
-        registry.addEndpoint("/ws").withSockJS();
+        registry.addEndpoint("/ws").withSockJS()
+                .setInterceptors(this.httpSessionHandshakeInterceptor());;
     }
 
     @Override
@@ -22,7 +27,12 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
         config.setApplicationDestinationPrefixes("/app");
         // Use the built-in message broker for subscriptions and broadcasting and
         // route messages whose destination header begins with /topic or /queue to the broker
+        config.setUserDestinationPrefix("/user");
         config.enableSimpleBroker("/topic", "/queue");
+    }
+    @Bean
+    public HandshakeInterceptor httpSessionHandshakeInterceptor() {
+        return new HttpSessionHandshakeInterceptor();
     }
 }
 
